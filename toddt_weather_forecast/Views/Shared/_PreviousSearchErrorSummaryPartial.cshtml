@@ -1,0 +1,10 @@
+﻿@model toddt_weather_forecast.Models.PreviousSearchPagedList
+<div class="row">
+    <div class="col-xs-4">
+        @if (Model?.ErrorMessage != null)
+        {
+            <p>Error Summary</p>
+            @Html.ValidationMessage("", Model.ErrorMessage, new { @class = "text-danger" })
+        }
+    </div>
+</div>

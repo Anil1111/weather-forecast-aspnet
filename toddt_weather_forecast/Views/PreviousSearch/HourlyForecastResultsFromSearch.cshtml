@@ -1,0 +1,34 @@
+﻿@model toddt_weather_forecast.Models.HourlyForecastPagedListFromSearch
+@using PagedList.Mvc;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts
+{
+    <script src="~/Scripts/canvasjs.min.js"></script>
+    <script src="~/Scripts/render.hourly.forecasts.js"></script>
+    <script>generateHourlyForecast(@Html.Raw(@Model.SerializedHourlyForecast), '@Model.HourlyGraphTitle',
+            '@Model.XAxisLabel', '@Model.YAxisLabel')</script>
+}
+
+<div class="row">
+    <h1>
+        @Html.ActionLink("Daily Forecast", "DailyForecastResultsFromSearch", "PreviousSearch",
+             new { searchId = Model.hourlyForecastSearchId }, null)
+    </h1>
+</div>
+
+<div class="row">
+    <p>
+        <h1>Results!</h1>
+        <div id="chart" style="width: 500px; height: 300px;">
+        </div>
+    </p>
+</div>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("HourlyForecastResultsFromSearch", new { page,
+    searchId = Model.hourlyForecastSearchId }))

@@ -1,0 +1,36 @@
+﻿@model toddt_weather_forecast.Models.DailyForecastPagedList
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts
+{
+    <script src="~/Scripts/canvasjs.min.js"></script>
+    <script src="~/Scripts/render.daily.forecasts.js"></script>
+    <script>generateLowTemperaturesChart(@Html.Raw(@Model.SerializedLowTemperatures),
+            '@Model.LowTemperatureGraphTitle', '@Model.XAxisLabel', '@Model.LowTemperatureYAxisLabel')</script>
+    <script>generateHighTemperaturesChart(@Html.Raw(@Model.SerializedHighTemperatures),
+            '@Model.HighTemperatureGraphTitle', '@Model.XAxisLabel', '@Model.HighTemperatureYAxisLabel')</script>
+}
+
+<div class="row">
+    <h1>
+        @Html.ActionLink("View Hourly Forecasts", "HourlyForecastResults", "Search",
+             new { latitude = Model.LatitudeFromSearch, longitude = Model.LongitudeFromSearch }, null)
+    </h1>
+</div>
+
+<div class="row">
+    <p>
+        <h1>Results!</h1>
+        <div id="lowTempChart" style="width: 500px; height: 300px;"></div>
+        <div id="highTempChart" style="width: 500px; height: 300px;"></div>
+    </p>
+</div>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("DailyForecastResults",
+    new { page, latitude = Model.LatitudeFromSearch, longitude = Model.LongitudeFromSearch }))

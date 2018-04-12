@@ -1,0 +1,32 @@
+﻿<link href="~/Content/application.css" style="text/css" rel="stylesheet" />
+@{
+    var searchResultActionName = "HourlyForecastResults";
+    var searchControllerName = "Search";
+    var searchNameAttribute = "search";
+    var errorMessageKey = "errorMessage";
+    var blankValue = ""; // also used to indicate there is no model name (as in the validation message helper function).
+    var errorMessage = TempData[errorMessageKey];
+    var titleDescription = "Enter An Address Below!";
+}
+
+<div class="jumbotron">
+    @if (errorMessage != null)
+    {
+        <!-- TODO: Partial view: takes blank value which is supposed to be a model, and the error message itself. -->
+        <div class="row">
+            <div class="col-xs-4">
+                <p>Error Summary</p>
+                @Html.ValidationMessage(blankValue, errorMessage.ToString(), new { @class = "text-danger" })
+            </div>
+        </div>
+    }
+    <div class="row center">
+        @using (Html.BeginForm(searchResultActionName, searchControllerName))
+        {   
+            <h2>@Html.Raw(titleDescription)</h2>
+            @Html.TextBox(searchNameAttribute.ToString(), blankValue, new { @class = "form-control" })
+            <input type="submit" value="Search!" class="btn btn-lg btn-primary"/>
+        }
+    </div>
+</div>
+
